@@ -11,7 +11,7 @@ import { useFetcher } from "@remix-run/react";
 import { EyeCheck, EyeOff } from "tabler-icons-react";
 import * as Yup from "yup";
 import { SignInDto } from "~/dtos/auth/signin.dto";
-import { badRequest } from "~/responses.server";
+import { Responses } from "~/responses.server";
 import { createUserSession } from "~/sessions.server";
 
 export const action: ActionFunction = async ({ request }) => {
@@ -29,7 +29,7 @@ export const action: ActionFunction = async ({ request }) => {
     });
     const responseData = await response.json();
     if (!response.ok) {
-        return badRequest(responseData);
+        return Responses.BAD_REQUEST(responseData);
     }
     return createUserSession(
         responseData.id,

@@ -11,17 +11,21 @@ import {
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { fetch, json, LoaderFunction, redirect } from "@remix-run/node";
-import { Outlet, useLoaderData } from "@remix-run/react";
+import { useLoaderData, useLocation, useOutlet } from "@remix-run/react";
+import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { MainLinks } from "~/components/navigation/main-links";
 import { User } from "~/components/navigation/user";
 import { getUserData } from "~/sessions.server";
+import HttpStatusCode from "~/utils/enums/httpStatusCodes";
 
 export const loader: LoaderFunction = async ({ request }) => {
     const apiEndpoint = process.env.API_ADRESS + "/auth/current-user";
     const userData = await getUserData(request);
     if (!userData.token) {
-        return redirect("/auth/signin", { status: 302 });
+        return redirect("/auth/signin", {
+            status: HttpStatusCode.UNAUTHORIZED,
+        });
     }
     const response = await fetch(apiEndpoint, {
         headers: {
@@ -31,21 +35,32 @@ export const loader: LoaderFunction = async ({ request }) => {
     });
     const data = await response.json();
     if (!response.ok) {
-        return redirect("/auth/signin", { status: 302 });
+        return redirect("/auth/signin", {
+            status: HttpStatusCode.UNAUTHORIZED,
+        });
     }
     return json(data);
 };
 
 export default function Dashboard() {
     const currentUser = useLoaderData();
+    const { pathname } = useLocation();
+    const outlet = useOutlet();
     const theme = useMantineTheme();
-    const [opened, setOpened] = useState(false);
-    const matches = useMediaQuery("(min-width: 900px)", false);
+    const [opened, setOpened] = useState<boolean>(false);
+    const matches = useMediaQuery("(min-width: 768px)", false);
     useEffect(() => {
         if (matches) {
             setOpened(true);
+        } else {
+            setOpened(false);
         }
     }, [matches]);
+    useEffect(() => {
+        if (!matches) {
+            setOpened(false);
+        }
+    }, [pathname]);
 
     return (
         <AppShell
@@ -70,7 +85,7 @@ export default function Dashboard() {
                         <Navbar
                             p="md"
                             style={{ ...styles }}
-                            width={{ sm: 200, lg: 300 }}
+                            width={{ sm: 250, lg: 300 }}
                         >
                             <Navbar.Section grow mt="md">
                                 <MainLinks />
@@ -97,7 +112,7 @@ export default function Dashboard() {
                         >
                             <Burger
                                 opened={opened}
-                                onClick={() => setOpened((o) => !o)}
+                                onClick={() => setOpened((opened) => !opened)}
                                 size="sm"
                                 color={theme.colors.gray[6]}
                                 mr="xl"
@@ -113,7 +128,19 @@ export default function Dashboard() {
                 </Header>
             }
         >
-            <Outlet />
+            <div style={{ overflow: "hidden" }}>
+                <AnimatePresence exitBeforeEnter initial={false}>
+                    <motion.div
+                        key={pathname}
+                        initial={{ y: "-30%", opacity: 0 }}
+                        animate={{ y: "0%", opacity: 1 }}
+                        exit={{ y: "-30%", opacity: 0 }}
+                        transition={{ duration: matches ? 0.3 : 0.6 }}
+                    >
+                        {outlet}
+                    </motion.div>
+                </AnimatePresence>
+            </div>
         </AppShell>
     );
 }

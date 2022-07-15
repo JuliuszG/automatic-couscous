@@ -12,7 +12,7 @@ import { useFetcher } from "@remix-run/react";
 import { EyeCheck, EyeOff } from "tabler-icons-react";
 import { useForm, yupResolver } from "@mantine/form";
 import { CreateUserDto } from "~/dtos/auth/create-user.dto";
-import { badRequest } from "~/responses.server";
+import { Responses } from "~/responses.server";
 
 export const action: ActionFunction = async ({ request }) => {
     const apiEndpoint = process.env.API_ADRESS + "/users";
@@ -32,7 +32,7 @@ export const action: ActionFunction = async ({ request }) => {
     if (response.ok) {
         return redirect("auth/signin");
     }
-    return badRequest(data);
+    return Responses.BAD_REQUEST(data);
 };
 
 const schema = Yup.object().shape({
