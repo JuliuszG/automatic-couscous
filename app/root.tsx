@@ -2,6 +2,7 @@ import { Global, MantineProvider } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
 import { NotificationsProvider } from "@mantine/notifications";
 import type { MetaFunction } from "@remix-run/node";
+import type { LinksFunction } from "@remix-run/node";
 import {
     Links,
     LiveReload,
@@ -10,12 +11,17 @@ import {
     Scripts,
     ScrollRestoration,
 } from "@remix-run/react";
+import styles from "./styles/app.css"
 
 export const meta: MetaFunction = () => ({
     charset: "utf-8",
     title: "E-Concierge",
     viewport: "width=device-width,initial-scale=1",
 });
+
+export const links: LinksFunction = () => {
+    return [{ rel: "stylesheet", href: styles }]
+}
 
 export default function App() {
     return (
