@@ -1,4 +1,4 @@
-import { useTable, usePagination, useSortBy } from "react-table";
+import { useTable, usePagination, useSortBy, useExpanded } from "react-table";
 import {
     Table,
     NumberInput,
@@ -61,7 +61,11 @@ const CustomTable = ({ columns, data, links }: any) => {
                         }}>
                             {headerGroup.headers.map((column) => {
                                 return (
-                                    <th {...column.getHeaderProps(column.getSortByToggleProps())} onClick={() => handleSortClick(column)}>
+                                    <th
+                                        {...column.getHeaderProps(column.getSortByToggleProps())}
+                                        className="border border-[#373A40]"
+                                        onClick={() => handleSortClick(column)}
+                                    >
                                         <div className="inline-flex pt-3 pb-4">
                                             <span>{column.render("Header")}</span>
                                             <span
@@ -87,7 +91,7 @@ const CustomTable = ({ columns, data, links }: any) => {
                             <tr {...row.getRowProps()}>
                                 {row.cells.map((cell) => {
                                     return (
-                                        <td {...cell.getCellProps()} className='max-w-xs break-words pt-3 pb-4'>{cell.render("Cell")}</td>
+                                        <td {...cell.getCellProps()} className='max-w-xs break-words pt-3 pb-4 border border-[#373A40]'>{cell.render("Cell")}</td>
                                     );
                                 })}
                             </tr>
@@ -96,7 +100,7 @@ const CustomTable = ({ columns, data, links }: any) => {
                 </tbody>
             </Table>
             {/* <Paper radius={0}> */}
-            <Group>
+            <Group className="mt-4">
                 <ActionIcon
                     onClick={() => gotoPage('1')}
                     disabled={links.currentPage === 1}

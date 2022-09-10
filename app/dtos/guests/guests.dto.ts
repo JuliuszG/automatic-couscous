@@ -1,8 +1,17 @@
 export interface GuestsDto {
-	firstName: string;
+	roomNumber: number | null;
+	floor: number | null;
+	roomType: string | null;
+	food: string | null;
+	periodOfResidence: string | null;
+	arrivalAt: Date | string;
+	departureAt: Date | string;
 	lastName: string;
-	roomNumber: number;
-	floor?: number;
-	food?: string;
-	period?: number;
+	firstName: string;
+	age: number | null;
 }
+type Tourist = {
+	lastName: string;
+	firstName: string;
+	age: string;
+};
