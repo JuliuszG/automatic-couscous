@@ -102,7 +102,7 @@ const Edit = () => {
     };
 
     useEffect(() => {
-        setFormValue();
+        hotelData && setFormValue();
     }, [hotelData])
 
     if (!hotelData) {

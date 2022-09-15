@@ -54,8 +54,8 @@ const data = [
     {
         icon: <Users size={16} />,
         color: "teal",
-        label: "Clients",
-        to: "/dashboard/clients",
+        label: "Guests",
+        to: "/dashboard/guests/list",
     },
     {
         icon: <Messages size={16} />,

@@ -119,11 +119,11 @@ const List = () => {
         columns: [
           {
             Header: 'Arrival At',
-            accessor: value => value?.periodOfStay.arrivalAt ?? '-'
+            accessor: value => value?.periodOfStay.arrivalAt ? new Date(value.periodOfStay.arrivalAt).toLocaleDateString("en-US") : '-'
           },
           {
             Header: 'Departure At',
-            accessor: value => value?.periodOfStay.departureAt ?? '-'
+            accessor: value => value?.periodOfStay.departureAt ? new Date(value.periodOfStay.departureAt).toLocaleDateString("en-US") : '-'
           },
         ]
       },
@@ -142,7 +142,7 @@ const List = () => {
 
           return (
             <div className="flex justify-center">
-              <Link to={`../about/${row.original.id}`} className="mr-2">
+              <Link to={`../guests/about/${row.original.id}`} className="mr-2">
                 <ActionIcon size="md" variant="outline" color='blue' >
                   <IconEye />
                 </ActionIcon>

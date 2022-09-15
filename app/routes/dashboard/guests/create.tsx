@@ -1,7 +1,7 @@
 import * as Yup from "yup";
 import { Link, useFetcher, useLoaderData } from "@remix-run/react";
 import { TextInput, Button, Group, Stack, Text, Title, ActionIcon, Divider, NumberInput, Select, Checkbox, Box, Paper } from '@mantine/core';
-import { ActionFunction, json } from "@remix-run/node";
+import { ActionFunction, json, redirect } from "@remix-run/node";
 import { Responses } from "~/responses.server";
 import { useForm, yupResolver } from "@mantine/form";
 import { IconArrowLeft } from "@tabler/icons";
@@ -45,7 +45,7 @@ export const action: ActionFunction = async ({ request }) => {
     if (!response.ok) {
         return Responses.BAD_REQUEST(responseData);
     }
-    return responseData
+    return redirect(`../dashboard/guests/about/${responseData?.id}`)
 };
 
 const schema = Yup.object().shape({
@@ -121,11 +121,6 @@ const Create = () => {
         return (
             <div>
                 <Group >
-                    <Link to='../about'>
-                        <ActionIcon size="lg" variant="light">
-                            <IconArrowLeft />
-                        </ActionIcon>
-                    </Link>
                     <Title order={1}>Create Guest</Title>
                 </Group>
                 <Divider my="sm" />

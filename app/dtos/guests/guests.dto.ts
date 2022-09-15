@@ -3,7 +3,7 @@ export interface GuestsDto {
 	floor: number | null;
 	roomType: string | null;
 	food: string | null;
-	periodOfResidence: string | null;
+	periodOfResidence: number | null;
 	arrivalAt: Date | string;
 	departureAt: Date | string;
 	lastName: string;

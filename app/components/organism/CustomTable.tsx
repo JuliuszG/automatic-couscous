@@ -59,10 +59,11 @@ const CustomTable = ({ columns, data, links }: any) => {
                         <tr {...headerGroup.getHeaderGroupProps()} style={{
                             backgroundColor: 'rgba(24, 100, 171, 0.85)',
                         }}>
-                            {headerGroup.headers.map((column) => {
+                            {headerGroup.headers.map((column , index) => {
                                 return (
                                     <th
                                         {...column.getHeaderProps(column.getSortByToggleProps())}
+                                        key={column.id + index}
                                         className="border border-[#373A40]"
                                         onClick={() => handleSortClick(column)}
                                     >
@@ -88,7 +89,7 @@ const CustomTable = ({ columns, data, links }: any) => {
                     {page.map((row, i) => {
                         prepareRow(row);
                         return (
-                            <tr {...row.getRowProps()}>
+                            <tr {...row.getRowProps()} key={row.id + i}>
                                 {row.cells.map((cell) => {
                                     return (
                                         <td {...cell.getCellProps()} className='max-w-xs break-words pt-3 pb-4 border border-[#373A40]'>{cell.render("Cell")}</td>
