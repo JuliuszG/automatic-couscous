@@ -1,5 +1,5 @@
 import React from "react";
-import { UserCircle, Users, Messages } from "tabler-icons-react";
+import { UserCircle, Users, Messages, HotelService  } from "tabler-icons-react";
 import { ThemeIcon, UnstyledButton, Group, Text } from "@mantine/core";
 import { Link } from "@remix-run/react";
 
@@ -54,14 +54,20 @@ const data = [
     {
         icon: <Users size={16} />,
         color: "teal",
-        label: "Clients",
-        to: "/dashboard/clients",
+        label: "Guests",
+        to: "/dashboard/guests/list",
     },
     {
         icon: <Messages size={16} />,
         color: "violet",
         label: "Messages",
         to: "/dashboard/messages",
+    },
+    {
+        icon: <HotelService size={16} />,
+        color: "orange",
+        label: "Hotels",
+        to: "/dashboard/hotels/list",
     },
 ];
 

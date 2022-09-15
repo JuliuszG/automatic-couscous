@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.mantine-ax4po3 tbody tr:last-of-type td {
+    border-bottom: 1px solid #373A40;
+}
