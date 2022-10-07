@@ -1,6 +1,7 @@
 import {
     Anchor,
     Box,
+    Divider,
     Group,
     LoadingOverlay,
     MediaQuery,
@@ -24,11 +25,11 @@ export default function AuthPage() {
     const { pathname } = useLocation();
     const outlet = useOutlet();
     const { submission } = useTransition();
+
     return (
         <Group align="center" position="center" style={{ height: "100vh" }}>
             <LoadingOverlay visible={!!submission} />
             <Group
-                direction="column"
                 spacing="xl"
                 style={{ overflow: "hidden" }}
             >
@@ -40,11 +41,12 @@ export default function AuthPage() {
                 >
                     <Title order={1}>Welcome to E-Concierge</Title>
                 </MediaQuery>
+                <Divider size="sm" orientation="vertical" />
                 <MediaQuery smallerThan="xs" styles={{ width: "100%" }}>
                     <Paper
                         sx={(theme) => ({
                             backgroundColor: theme.colors.dark[9],
-                            height: pathname === "/auth/signin" ? 300 : 380,
+                            height: 320,
                             width: 500,
                             maxHeight: 1000,
                             transition: "height 0.2s ease",
@@ -55,10 +57,6 @@ export default function AuthPage() {
                         <Box mb="lg">
                             <Anchor component={Link} to="/auth/signin">
                                 Sign in
-                            </Anchor>{" "}
-                            |{" "}
-                            <Anchor component={Link} to="/auth/signup">
-                                Sign up
                             </Anchor>
                         </Box>
 

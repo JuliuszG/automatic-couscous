@@ -16,6 +16,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { MainLinks } from "~/components/navigation/main-links";
 import { User } from "~/components/navigation/user";
+import { UserProvider, useUserData } from "~/context/user-context";
 import { getUserData } from "~/sessions.server";
 import HttpStatusCode from "~/utils/enums/httpStatusCodes";
 
@@ -39,7 +40,7 @@ export const loader: LoaderFunction = async ({ request }) => {
             status: HttpStatusCode.UNAUTHORIZED,
         });
     }
-    return json(data);
+    return json({ ...data, token: userData.token });
 };
 
 export default function Dashboard() {
@@ -49,6 +50,7 @@ export default function Dashboard() {
     const theme = useMantineTheme();
     const [opened, setOpened] = useState<boolean>(false);
     const matches = useMediaQuery("(min-width: 768px)", false);
+
     useEffect(() => {
         if (matches) {
             setOpened(true);
@@ -56,6 +58,7 @@ export default function Dashboard() {
             setOpened(false);
         }
     }, [matches]);
+
     useEffect(() => {
         if (!matches) {
             setOpened(false);
@@ -88,7 +91,7 @@ export default function Dashboard() {
                             width={{ sm: 250, lg: 300 }}
                         >
                             <Navbar.Section grow mt="md">
-                                <MainLinks />
+                                <MainLinks userValue={currentUser}/>
                             </Navbar.Section>
                             <Navbar.Section>
                                 <User email={currentUser.email} />
@@ -129,17 +132,19 @@ export default function Dashboard() {
             }
         >
             <div style={{ overflow: "hidden" }}>
-                <AnimatePresence exitBeforeEnter initial={false}>
-                    <motion.div
-                        key={pathname}
-                        initial={{ y: "-30%", opacity: 0 }}
-                        animate={{ y: "0%", opacity: 1 }}
-                        exit={{ y: "-30%", opacity: 0 }}
-                        transition={{ duration: matches ? 0.3 : 0.6 }}
-                    >
-                        {outlet}
-                    </motion.div>
-                </AnimatePresence>
+                <UserProvider userValue={currentUser}>
+                    <AnimatePresence exitBeforeEnter initial={false}>
+                        <motion.div
+                            key={pathname}
+                            initial={{ y: "-30%", opacity: 0 }}
+                            animate={{ y: "0%", opacity: 1 }}
+                            exit={{ y: "-30%", opacity: 0 }}
+                            transition={{ duration: matches ? 0.3 : 0.6 }}
+                        >
+                            {outlet}
+                        </motion.div>
+                    </AnimatePresence>
+                </UserProvider>
             </div>
         </AppShell>
     );

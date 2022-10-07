@@ -26,19 +26,20 @@ export function User({ email, fullName, avatar }: UserProps) {
     const theme = useMantineTheme();
     const matches = useMediaQuery("(min-width: 768px)", false);
     const submit = useSubmit();
+
     function handleSignout() {
         submit(null, { method: "post", action: "/auth/signout" });
     }
+
     return (
         <Box
             sx={{
                 paddingTop: theme.spacing.sm,
                 width: "100%",
-                borderTop: `1px solid ${
-                    theme.colorScheme === "dark"
+                borderTop: `1px solid ${theme.colorScheme === "dark"
                         ? theme.colors.dark[4]
                         : theme.colors.gray[2]
-                }`,
+                    }`,
             }}
         >
             <Menu
@@ -54,6 +55,7 @@ export function User({ email, fullName, avatar }: UserProps) {
             >
                 <Menu.Label>Application</Menu.Label>
                 <Menu.Item
+                    className="my-1"
                     component={Link}
                     to="/dashboard/account"
                     icon={<Settings size={14} />}
@@ -61,6 +63,7 @@ export function User({ email, fullName, avatar }: UserProps) {
                     Settings
                 </Menu.Item>
                 <Menu.Item
+                    className="my-1 mb-2"
                     component={Link}
                     to="/dashboard/messages"
                     icon={<MessageCircle size={14} />}
@@ -71,6 +74,7 @@ export function User({ email, fullName, avatar }: UserProps) {
                 <Divider />
 
                 <Menu.Item
+                    className="my-1 mt-2"
                     onClick={handleSignout}
                     color="red"
                     icon={<Logout size={14} />}

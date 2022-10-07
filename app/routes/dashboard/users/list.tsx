@@ -6,14 +6,12 @@ import { Form, Link, useFetcher, useLoaderData, useNavigate } from "@remix-run/r
 import CustomTable from "~/components/organism/CustomTable";
 import { ActionIcon, Card, Divider, Group, Title } from "@mantine/core";
 import { IconEye, IconTrash } from "@tabler/icons";
+import { fetchUsersList } from "~/api/user-api.services";
 
 type Col = {
-  description?: string;
-  hotelImgId?: null;
   id: string;
-  location?: number[];
-  name: string;
-  rating?: null;
+  email: string;
+  role: string;
   actions?: null;
 };
 
@@ -34,7 +32,7 @@ export const loader = async ({ request }: Loader) => {
   const limit = url.searchParams.get("limit") || '10';
   const sortDirection = url.searchParams.get("sortDirection") || 'DESC';
   const sortCol = url.searchParams.get("sortCol") || 'id';
-  const res = await fetchHotelsList(page, limit, sortDirection as "ASC" | "DESC", sortCol, request);
+  const res = await fetchUsersList(page, limit, sortDirection as "ASC" | "DESC", sortCol, request);
   const data = await res.json();
   return json(data)
 };
@@ -47,18 +45,20 @@ export const action: ActionFunction = async ({ request }: any) => {
   return loader({ request })
 };
 
-const List = () => {
-  const hotelData = useLoaderData();
+const UserList = () => {
+  const userData = useLoaderData();
   const fetcher = useFetcher();
 
+  console.log(userData)
+
   const data: Col[] = useMemo(
-    () => hotelData?.items,
-    [hotelData]
+    () => userData?.items,
+    [userData]
   )
 
   const links: Pagination = useMemo(
-    () => hotelData?.meta,
-    [hotelData]
+    () => userData?.meta,
+    [userData]
   )
 
   const columns: Array<Column<Col>> = useMemo(
@@ -68,16 +68,12 @@ const List = () => {
         accessor: 'id',
       },
       {
-        Header: 'Name',
-        accessor: 'name',
+        Header: 'E-mail',
+        accessor: 'email',
       },
       {
-        Header: 'Description',
-        accessor: 'description',
-      },
-      {
-        Header: 'Rating',
-        accessor: 'rating',
+        Header: 'Role',
+        accessor: 'role',
       },
       {
         Header: 'Actions',
@@ -116,7 +112,7 @@ const List = () => {
   return (
     <>
       <Group >
-        <Title order={1}>Hotels</Title>
+        <Title order={1}>Users</Title>
       </Group>
       <Divider my="sm" />
       <Card>
@@ -127,4 +123,4 @@ const List = () => {
 
 }
 
-export default List
+export default UserList

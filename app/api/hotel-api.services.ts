@@ -12,7 +12,7 @@ export async function fetchAboutHotelData(id: string, request: Request) {
 
 export async function deleteHotelData(id: string, request: Request) {
 	const userSession = await getUserData(request);
-	const res = await fetch(`${process.env.API_ADRESS}/hotel/${id}`, {
+	const res = await fetch(`http://localhost:5000/api/hotel/${id}`, {
 		method: 'DELETE',
 		headers: {
 			Authorization: `Bearer ${userSession.token}`,
@@ -61,10 +61,7 @@ export async function editHotelData(
 	return res;
 }
 
-export async function createHotelData(
-	request: Request,
-	body: any,
-) {
+export async function createHotelData(request: Request, body: any) {
 	const { token } = await getUserData(request);
 	const apiEndpoint = process.env.API_ADRESS + `/hotel`;
 	const res = await fetch(apiEndpoint, {

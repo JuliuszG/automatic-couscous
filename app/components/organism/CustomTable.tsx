@@ -9,6 +9,7 @@ import {
 } from "@mantine/core";
 import { IconChevronLeft, IconChevronRight, IconChevronsLeft, IconChevronsRight, IconSortDescending2, IconSortAscending2 } from "@tabler/icons";
 import { useSearchParams } from "@remix-run/react";
+import { v4 as uuidv4 } from 'uuid';
 
 const CustomTable = ({ columns, data, links }: any) => {
     const {
@@ -22,7 +23,6 @@ const CustomTable = ({ columns, data, links }: any) => {
         usePagination)
     let [searchParams, setSearchParams] = useSearchParams();
 
-
     const nextPage = () => {
         setSearchParams({ page: links.currentPage + 1, limit: links.itemsPerPage })
     }
@@ -30,6 +30,7 @@ const CustomTable = ({ columns, data, links }: any) => {
     const previousPage = () => {
         setSearchParams({ page: (+links.currentPage - 1).toString(), limit: links.itemsPerPage })
     }
+    
     const gotoPage = (page: string) => {
         setSearchParams({ page: page, limit: links.itemsPerPage })
     }
@@ -55,11 +56,11 @@ const CustomTable = ({ columns, data, links }: any) => {
         <div >
             <Table {...getTableProps()} highlightOnHover >
                 <thead>
-                    {headerGroups.map((headerGroup) => (
-                        <tr {...headerGroup.getHeaderGroupProps()} style={{
+                    {headerGroups.map((headerGroup, ind) => (
+                        <tr {...headerGroup.getHeaderGroupProps()} key={ind} style={{
                             backgroundColor: 'rgba(24, 100, 171, 0.85)',
                         }}>
-                            {headerGroup.headers.map((column , index) => {
+                            {headerGroup.headers.map((column, index) => {
                                 return (
                                     <th
                                         {...column.getHeaderProps(column.getSortByToggleProps())}
@@ -86,13 +87,15 @@ const CustomTable = ({ columns, data, links }: any) => {
                     ))}
                 </thead>
                 <tbody {...getTableBodyProps()}>
-                    {page.map((row, i) => {
+                    {page.map((row) => {
                         prepareRow(row);
                         return (
-                            <tr {...row.getRowProps()} key={row.id + i}>
-                                {row.cells.map((cell) => {
+                            <tr
+                                {...row.getRowProps()}
+                                key={uuidv4()}>
+                                {row.cells.map((cell, index) => {
                                     return (
-                                        <td {...cell.getCellProps()} className='max-w-xs break-words pt-3 pb-4 border border-[#373A40]'>{cell.render("Cell")}</td>
+                                        <td {...cell.getCellProps()} key={uuidv4()} className='max-w-xs break-words pt-3 pb-4 border border-[#373A40]'>{cell.render("Cell")}</td>
                                     );
                                 })}
                             </tr>
@@ -100,7 +103,6 @@ const CustomTable = ({ columns, data, links }: any) => {
                     })}
                 </tbody>
             </Table>
-            {/* <Paper radius={0}> */}
             <Group className="mt-4">
                 <ActionIcon
                     onClick={() => gotoPage('1')}

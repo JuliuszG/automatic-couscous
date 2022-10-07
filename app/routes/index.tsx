@@ -4,7 +4,7 @@ import { getUserData } from "~/sessions.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
     const userSession = await getUserData(request);
-    if (!userSession) {
+    if (!userSession.token) {
         return redirect("/auth");
     }
     return redirect("/dashboard");

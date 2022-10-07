@@ -1,4 +1,4 @@
-import { Button, Group, PasswordInput, Text, TextInput } from "@mantine/core";
+import { Button, Stack, PasswordInput, Text, TextInput } from "@mantine/core";
 import { useForm, yupResolver } from "@mantine/form";
 import {
     ActionFunction,
@@ -63,7 +63,7 @@ export default function SignIn() {
             method="post"
             onSubmit={form.onSubmit((values) => handleSubmit(values))}
         >
-            <Group grow={true} direction="column" spacing="sm">
+            <Stack spacing="xs">
                 <TextInput
                     label="E-mail"
                     name="email"
@@ -91,7 +91,7 @@ export default function SignIn() {
                 <Button type="submit" mt="lg">
                     Sign In
                 </Button>
-            </Group>
+            </Stack>
         </fetcher.Form>
     );
 }
